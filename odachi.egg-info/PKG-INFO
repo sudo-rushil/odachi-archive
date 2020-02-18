@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: odachi
+Version: 0.1.3
+Summary: Advanced deep learning-based organic retrosynthesis engine
+Home-page: https://github.com/sudo-rushil/odachi
+Author: Rushil Mallarapu
+Author-email: rushil.mallarapu@gmail.com
+License: MIT
+Download-URL: https://github.com/sudo-rushil/odachi/archive/v0.1.tar.gz
+Description: # Odachi
+        
+        Advanced deep learning-based organic retrosynthesis engine.
+        
+        # Overview
+        
+Keywords: Chemistry,Organic Chemistry,Synthesis,Retrosynthesis,Deep Learning,AI,Graph,Convolution,Graph Convolution,CNN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown

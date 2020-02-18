@@ -1,5 +1,3 @@
-recursive-include odachi.data *.py
-recursive-include odachi.data.rxn-data *.txt
-recursive-include odachi.engine *.py
-recursive-include odachi *.py
-recursive-include odachi.engine.models *.h5
+recursive-include odachi/engine/ *.h5
+global-include *.h5
+global-include *.py

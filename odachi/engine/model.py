@@ -16,7 +16,7 @@ from odachi.data.read import mol_with_atom_index
 from odachi.data.conv import Conv
 from odachi.engine.layers import ConvEmbed
 
-MODEL_DIR = os.path.join(os.path.dirname(os.path.realpath('__file__')), 'odachi/engine/models')
+MODEL_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class OdachiEngine(tf.keras.Model):
@@ -79,7 +79,6 @@ class Odachi:
         return bonds
 
     def __call__(self, smiles, clusters):
-        '''TODO: Fix!'''
         imol, iconv = ms(smiles), Conv(smiles)
 
         similarity = self._build_adj(iconv, *self.engine(iconv.adj_matrix, iconv.atom_features, iconv.num_atoms))
