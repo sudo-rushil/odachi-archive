@@ -22,10 +22,11 @@ MODEL_DIR = os.path.dirname(os.path.abspath(__file__))
 class OdachiEngine(tf.keras.Model):
     def __init__(self, version=9):
         super(OdachiEngine, self).__init__()
-        self.embed = ConvEmbed(4, 0.05)
-        self.embed.load_weights(os.path.join(MODEL_DIR, f'../models/embedders/odachi_embed_v{version}.h5'))
 
-        self.classifier = tf.keras.models.load_model(os.path.join(MODEL_DIR, f'../models/classifiers/odachi_class_v{version}.h5'))
+        self.embed = ConvEmbed(4, 0.05)
+        self.embed.load_weights(os.path.join(MODEL_DIR, f'models/odachi_embed_v1_e{version}.h5'))
+
+        self.classifier = tf.keras.models.load_model(os.path.join(MODEL_DIR, f'models/odachi_class_v1_e{version}.h5'), compile=False)
 
     def call(self, adj_matrix, atom_features, num_atoms):
         embed = self.embed([adj_matrix, atom_features])
@@ -42,8 +43,8 @@ class OdachiEngine(tf.keras.Model):
 
 
 class Odachi:
-    def __init__(self, version):
-        self.engine = OdachiEngine(version)
+    def __init__(self):
+        self.engines = [OdachiEngine(i) for i in range(10)]
 
     def _build_adj(self, conv, idxs, classes):
         similarity = np.eye(conv.num_atoms)
@@ -78,10 +79,12 @@ class Odachi:
 
         return bonds
 
-    def __call__(self, smiles, clusters):
+    def __call__(self, smiles, clusters, version):
+        assert 0 <= version <= 9, "Version error: pick version between 0 and 9"
+
         imol, iconv = ms(smiles), Conv(smiles)
 
-        similarity = self._build_adj(iconv, *self.engine(iconv.adj_matrix, iconv.atom_features, iconv.num_atoms))
+        similarity = self._build_adj(iconv, *self.engines[version](iconv.adj_matrix, iconv.atom_features, iconv.num_atoms))
         colors = self._cluster(similarity, clusters)
         bonds = self._get_broken_bonds(imol, colors)
 
