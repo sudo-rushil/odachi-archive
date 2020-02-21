@@ -20,10 +20,10 @@ MODEL_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class OdachiEngine(tf.keras.Model):
-    def __init__(self, version=9):
+    def __init__(self, version=9, knock=0):
         super(OdachiEngine, self).__init__()
 
-        self.embed = ConvEmbed(4, 0.05)
+        self.embed = ConvEmbed(4, knock)
         self.embed.load_weights(os.path.join(MODEL_DIR, f'models/odachi_embed_v1_e{version}.h5'))
 
         self.classifier = tf.keras.models.load_model(os.path.join(MODEL_DIR, f'models/odachi_class_v1_e{version}.h5'), compile=False)
@@ -43,8 +43,8 @@ class OdachiEngine(tf.keras.Model):
 
 
 class Odachi:
-    def __init__(self):
-        self.engines = [OdachiEngine(i) for i in range(10)]
+    def __init__(self, knock=0):
+        self.engines = [OdachiEngine(i, knock) for i in range(10)]
 
     def _build_adj(self, conv, idxs, classes):
         similarity = np.eye(conv.num_atoms)
