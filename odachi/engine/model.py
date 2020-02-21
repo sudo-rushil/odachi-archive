@@ -1,5 +1,6 @@
 
 import os
+import time
 import itertools
 import numpy as np
 import tensorflow as tf
@@ -82,6 +83,8 @@ class Odachi:
     def __call__(self, smiles, clusters, version):
         assert 0 <= version <= 9, "Version error: pick version between 0 and 9"
 
+        start = time.time()
+
         imol, iconv = ms(smiles), Conv(smiles)
 
         similarity = self._build_adj(iconv, *self.engines[version](iconv.adj_matrix, iconv.atom_features, iconv.num_atoms))
@@ -96,4 +99,4 @@ class Odachi:
         svg = drawer.GetDrawingText().replace('svg:','')
         # open(os.path.join(os.path.dirname(os.path.realpath('__file__')), f'{smiles}.svg'), 'w').write(svg)
 
-        return {'smiles': smiles, 'svg': svg, 'bonds': bonds}
+        return {'smiles': smiles, 'svg': svg, 'bonds': bonds, 'time': time.time() - start}
